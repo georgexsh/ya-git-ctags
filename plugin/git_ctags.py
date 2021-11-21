@@ -44,6 +44,7 @@ def ensure_tags_fresh(repo_dir):
         logging.info("tags is fresh")
         return
 
+    # 此处会阻塞 vim 主线程，投机取巧只执行不 wait
     subprocess.Popen("ctags")
     cache_path.write_bytes(head)
     logging.info("new tags generated for %s", head)

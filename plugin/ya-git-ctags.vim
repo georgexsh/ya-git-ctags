@@ -26,9 +26,9 @@ endfunction
 
 
 function! s:delay_gen_tags()
-    let t = timer_start(0,  { -> s:generate_tags() })
+    let t = timer_start(20,  { -> s:generate_tags() })
 endfunction
 
 
 command Ctags call s:generate_tags()
-autocmd BufEnter * call s:delay_gen_tags()
+command DelayCtags call s:delay_gen_tags()
