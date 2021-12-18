@@ -34,7 +34,14 @@ def is_tags_fresh(repo_dir, cache_path, head):
 
 def ensure_tags_fresh(repo_dir):
     os.chdir(repo_dir)
-    head = subprocess.check_output("git rev-parse HEAD", shell=True).strip()
+    try:
+        r = subprocess.run(
+            "git rev-parse HEAD", check=True, shell=True, capture_output=True
+        )
+        head = r.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        logging.info("parse repo head err: %s, empty repo?", e.stderr)
+        return
     logging.debug("repo head is %s", head)
     cache_file = str(repo_dir).replace("/", "%").replace(" ", "!")
     cache_path = pathlib.Path(f"{CACHE_DIR}/{cache_file}")
@@ -67,6 +74,7 @@ def main():
     #  run("/Users/georgexsh/workspace/wasteland/tmp/test_qr2.py")
     #  run("/Users/georgexsh/workspace/djv/duozhuayu/apps/web/app.py")
     run("/Users/georgexsh/workspace/wasteland/ttbridge/ttbridge/ttclient.py")
+    run("/Users/georgexsh/workspace/wasteland/alfred-timestamp/alfred-ts.go")
 
 
 if __name__ == "__main__":
