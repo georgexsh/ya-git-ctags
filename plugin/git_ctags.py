@@ -59,6 +59,10 @@ def ensure_tags_fresh(repo_dir):
 
 def run(f):
     logging.debug("inputed file is %s", f)
+    if f == "":
+        cwd = os.getcwd()
+        logging.debug("empty filename, failback to cwd: %s", cwd)
+        f = cwd
     repo_dir = find_git(f)
     logging.debug("repo dir is %s", repo_dir)
     if repo_dir is None:
