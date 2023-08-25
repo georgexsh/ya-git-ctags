@@ -15,14 +15,14 @@ def find_git(f):
     if not p.exists():
         return None
     while p != p.parent and p != USER_HOME:
-        if p.joinpath(".git").exists():
+        if (p / ".git").exists():
             return p
         p = p.parent
     return None
 
 
 def is_tags_fresh(repo_dir, cache_path, head):
-    if not repo_dir.joinpath("tags").exists():
+    if not (repo_dir / "tags").exists():
         logging.debug("no tags in repo")
         return False
     cached_head = cache_path.read_bytes() if cache_path.exists() else None
@@ -44,7 +44,7 @@ def ensure_tags_fresh(repo_dir):
         return
     logging.debug("repo head is %s", head)
     cache_file = str(repo_dir).replace("/", "%").replace(" ", "!")
-    cache_path = pathlib.Path(f"{CACHE_DIR}/{cache_file}")
+    cache_path = CACHE_DIR / cache_file
     logging.debug("cache path is %s", cache_path)
 
     if is_tags_fresh(repo_dir, cache_path, head):
@@ -77,7 +77,7 @@ def main():
     )
     #  run("/Users/georgexsh/workspace/wasteland/tmp/test_qr2.py")
     #  run("/Users/georgexsh/workspace/djv/duozhuayu/apps/web/app.py")
-    run("/Users/georgexsh/workspace/wasteland/ttbridge/ttbridge/ttclient.py")
+    run("/Users/georgexsh/workspace/djv/ttbridge/ttbridge/main.py")
     run("/Users/georgexsh/workspace/wasteland/alfred-timestamp/alfred-ts.go")
 
 
